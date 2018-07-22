@@ -35,6 +35,10 @@ class RightHandler(Thread):
         self.forwardLeft.value = 1.0
         self.reverseLeft.value = 0.0
     
+    def StopForward(self):
+        self.forwardLeft.value = 0.0
+        self.reverseLeft.value = 0.0
+    
     def start(self):
         # IN1 - Forward Drive
         self.L298_LEFT_PWM_FORWARD_PIN = 26
@@ -77,7 +81,7 @@ class RightHandler(Thread):
                 else:
                     sleep(10)
             finally:
-                pass
+                self.StopForward()
         
         
         

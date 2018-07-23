@@ -4,13 +4,13 @@ Created on Jul 21, 2018
 @author: ben
 """
 
-from threading import Thread
+import threading
 from gpiozero import PWMOutputDevice
 from time import sleep
 import adafruit_vl6180x
 
 
-class RightHandler(Thread):
+class RightHandler(threading.Thread):
     """
     This will handle the arm movement going right.
     
@@ -28,6 +28,9 @@ class RightHandler(Thread):
     
     Start small and move on. 1 connection 
     """
+
+    def __init__(self):
+        
     
     def GoForward(self):
         self.forwardLeft.value = 1.0

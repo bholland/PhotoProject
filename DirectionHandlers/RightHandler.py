@@ -4,13 +4,13 @@ Created on Jul 21, 2018
 @author: ben
 """
 
-import threading
+from threading import Thread
 from gpiozero import PWMOutputDevice
 from time import sleep
 import adafruit_vl6180x
 
 
-class RightHandler(threading.Thread):
+class RightHandler(Thread):
     """
     This will handle the arm movement going right.
     
@@ -29,18 +29,8 @@ class RightHandler(threading.Thread):
     Start small and move on. 1 connection 
     """
 
-    def __init__(self):
+    def setup(self, multiplex_handler, right_sensor_channel):
         
-    
-    def GoForward(self):
-        self.forwardLeft.value = 1.0
-        self.reverseLeft.value = 0.0
-    
-    def StopForward(self):
-        self.forwardLeft.value = 0.0
-        self.reverseLeft.value = 0.0
-    
-    def start(self, multiplex_handler, right_sensor_channel):
         # IN1 - Forward Drive
         self.L298_LEFT_PWM_FORWARD_PIN = 26
         
@@ -55,8 +45,15 @@ class RightHandler(threading.Thread):
         
         self.multiplex_handler = multiplex_handler
         self.right_sensor_channel = right_sensor_channel
-        
-        
+    
+    def GoForward(self):
+        self.forwardLeft.value = 1.0
+        self.reverseLeft.value = 0.0
+    
+    def StopForward(self):
+        self.forwardLeft.value = 0.0
+        self.reverseLeft.value = 0.0
+    
     
     def run(self):
         self.multiplex_handler.changeChannel(self.right_sensor_channel)
@@ -80,13 +77,13 @@ class RightHandler(threading.Thread):
                 ERROR_RANGEUFLOW - Range underflow
                 ERROR_RANGEOFLOW - Range overflow
                 """
-                
-                if status == adafruit_vl6180x.ERROR_NONE and rangemm < 10.0:
-                    return 0
-                elif status == adafruit_vl6180x.ERROR_NONE and rangemm < 25.0:
+                print("status: %s range %s" % (status, rangemm))
+                if status == adafruit_vl6180x.ERROR_NONE and rangemm < 25.0:
+                    break
+                elif status == adafruit_vl6180x.ERROR_NONE and rangemm < 50.0:
                     sleep(5)
                 elif status == adafruit_vl6180x.ERROR_NONE:
-                    sleep(10) 
+                    sleep(5) 
                 else:
                     print("Status error: %s" % status)
                     sleep(1)

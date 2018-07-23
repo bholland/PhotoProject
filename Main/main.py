@@ -3,6 +3,10 @@ Created on Jul 21, 2018
 
 @author: ben
 """
+import sys
+sys.path.append("/home/pi/workspace/PhotoProject/")
+print(sys.path)
+
 from DirectionHandlers.RightHandler import RightHandler
 from MultiplexHandlers.MultiplexHandler import *
 
@@ -20,7 +24,8 @@ def main():
     """
     multiplex_handler = MultiplexHandler()
     
-    right_handler = RightHandler(multiplex_handler, MULTIPLEX_CHANNEL_0)
+    right_handler = RightHandler()
+    right_handler.setup(multiplex_handler, MULTIPLEX_CHANNEL_0)
     right_handler.start()
     right_handler.join()
 

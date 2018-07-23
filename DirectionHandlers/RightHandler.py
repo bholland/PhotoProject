@@ -7,8 +7,6 @@ Created on Jul 21, 2018
 from threading import Thread
 from gpiozero import PWMOutputDevice
 from time import sleep
-import board
-import busio
 import adafruit_vl6180x
 
 
@@ -39,7 +37,7 @@ class RightHandler(Thread):
         self.forwardLeft.value = 0.0
         self.reverseLeft.value = 0.0
     
-    def start(self):
+    def start(self, multiplex_handler, right_sensor_channel):
         # IN1 - Forward Drive
         self.L298_LEFT_PWM_FORWARD_PIN = 26
         
@@ -49,13 +47,19 @@ class RightHandler(Thread):
         self.forwardLeft = PWMOutputDevice(self.L298_LEFT_PWM_FORWARD_PIN, True, 0, 1000)
         self.reverseLeft = PWMOutputDevice(self.L298_LEFT_PWM_REVERSE_PIN, True, 0, 1000)
         
-        self.i2c = busio.I2C(board.SCL, board.SDA)
+        self.i2c = multiplex_handler.getI2C()
         self.sensor = adafruit_vl6180x.VL6180X(self.i2c)
+        
+        self.multiplex_handler = multiplex_handler
+        self.right_sensor_channel = right_sensor_channel
+        
+        
     
     def run(self):
+        self.multiplex_handler.changeChannel(self.right_sensor_channel)
         self.GoForward()
-        while True:
-            try:
+        try:
+            while True:
                 """range is in mm"""
                 rangemm = self.sensor.range
                 status = self.sensor.range_status
@@ -73,15 +77,18 @@ class RightHandler(Thread):
                 ERROR_RANGEUFLOW - Range underflow
                 ERROR_RANGEOFLOW - Range overflow
                 """
-                print()
+                
                 if status == adafruit_vl6180x.ERROR_NONE and rangemm < 10.0:
                     return 0
                 elif status == adafruit_vl6180x.ERROR_NONE and rangemm < 25.0:
                     sleep(5)
+                elif status == adafruit_vl6180x.ERROR_NONE:
+                    sleep(10) 
                 else:
-                    sleep(10)
-            finally:
-                self.StopForward()
+                    print("Status error: %s" % status)
+                    sleep(1)
+        finally:
+            self.StopForward()
         
         
         

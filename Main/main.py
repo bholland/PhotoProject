@@ -4,6 +4,7 @@ Created on Jul 21, 2018
 @author: ben
 """
 from DirectionHandlers.RightHandler import RightHandler
+from MultiplexHandlers.MultiplexHandler import *
 
 def main():
     """
@@ -17,7 +18,9 @@ def main():
     Perhaps loop on camera photo acceptance or something along those lines.
     Actually, start the photo class and have it manage the camera. 
     """
-    right_handler = RightHandler()
+    multiplex_handler = MultiplexHandler()
+    
+    right_handler = RightHandler(multiplex_handler, MULTIPLEX_CHANNEL_0)
     right_handler.start()
     right_handler.join()
 

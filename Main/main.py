@@ -9,8 +9,9 @@ print(sys.path)
 
 from DirectionHandlers.RightHandler import RightHandler
 from MultiplexHandlers.MultiplexHandler import *
+from StepDrive.StepDrive import StepDrive
 
-def main():
+def main_right():
     """
     main class
     
@@ -28,6 +29,10 @@ def main():
     right_handler.setup(multiplex_handler, MULTIPLEX_CHANNEL_0)
     right_handler.start()
     right_handler.join()
+
+def main():
+    step_drive = StepDrive()
+    step_drive.step()
 
 if __name__ == "__main__":
     main()

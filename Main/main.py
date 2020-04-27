@@ -32,6 +32,7 @@ def main_right():
 
 def main():
     step_drive = StepDrive()
+    step_drive.setFullStep()
     step_drive.doStep()
 
 if __name__ == "__main__":

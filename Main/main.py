@@ -37,9 +37,7 @@ def main():
     step_drive.setFullStep()
     x = 0
     while x < 100:
-        #step_drive.doStep()
-        step_drive.step.on()
-        time.sleep(.1)
+        step_drive.doStep()
         x = x + 1
 
 if __name__ == "__main__":

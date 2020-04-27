@@ -1,5 +1,5 @@
 from gpiozero import DigitalOutputDevice
-
+import time
 class StepDrive():
     """This will be the class that manages step drives
     """
@@ -37,11 +37,9 @@ class StepDrive():
         self.ms3.off()
         
     def doStep(self):
-        if self.step.value == 0:
-            self.step.on()
-        else:
-            self.step.off()
-            self.step.on()
+        self.step.off()
+        time.sleep(.1)
+        self.step.on()
         
 
 

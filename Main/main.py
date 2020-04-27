@@ -7,6 +7,8 @@ import sys
 sys.path.append("/home/pi/workspace/PhotoProject/")
 print(sys.path)
 
+import time
+
 from DirectionHandlers.RightHandler import RightHandler
 from MultiplexHandlers.MultiplexHandler import *
 from StepDrive.StepDrive import StepDrive
@@ -33,7 +35,12 @@ def main_right():
 def main():
     step_drive = StepDrive()
     step_drive.setFullStep()
-    step_drive.doStep()
+    x = 0
+    while x < 100:
+        #step_drive.doStep()
+        step_drive.step.on()
+        time.sleep(.1)
+        x = x + 1
 
 if __name__ == "__main__":
     main()

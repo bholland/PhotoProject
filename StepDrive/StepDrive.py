@@ -28,14 +28,15 @@ class StepDrive():
 
         self.enable.off()
         self.rst.on()
+        self.vcc.on()
+        self.direction.on()
     
     def setFullStep(self):
         self.ms1.off()
         self.ms2.off()
         self.ms3.off()
-    
+        
     def doStep(self):
-        print ("step pin value: {}".format(self.step.value))
         if self.step.value == 0:
             self.step.on()
         else:

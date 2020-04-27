@@ -32,7 +32,7 @@ def main_right():
 
 def main():
     step_drive = StepDrive()
-    step_drive.step()
+    step_drive.doStep()
 
 if __name__ == "__main__":
     main()

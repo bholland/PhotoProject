@@ -34,8 +34,8 @@ class StepDrive():
         self.ms2.off()
         self.ms3.off()
     
-    def step(self):
-        
+    def doStep(self):
+        print ("step pin value: {}".format(self.step.value))
         if self.step.value == 0:
             self.step.on()
         else:

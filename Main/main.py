@@ -34,9 +34,8 @@ def main_right():
 
 def main():
     step_drive = StepDrive()
-    step_drive.setFullStep()
     x = 0
-    while x < 100:
+    while x < 10000:
         step_drive.doStep()
         x = x + 1
 
